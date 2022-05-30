@@ -1,0 +1,29 @@
+{:lib   io.github.sokrato/sok.ctf
+ :main  io.github.sokrato.ctf.core
+ :paths ["src" "target/classes"]
+
+ :deps
+ {com.google.guava/guava         {:mvn/version "31.1-jre"}
+  org.clojure/tools.logging      {:mvn/version "1.2.4"}
+  ch.qos.logback/logback-classic {:mvn/version "1.2.11"}}
+
+ ; clj -X:deps prep
+ :deps/prep-lib
+ {:ensure "target/classes"
+  :alias  :build
+  :fn     compile}
+
+ :aliases
+ {;; clj -X:dev :key :val
+  :dev   {:extra-deps {cheshire/cheshire {:mvn/version "5.10.2"}}
+          :exec-fn    io.github.sokrato.dev/exec-fn
+          :exec-args  {:job :greet}
+          :main-opts  ["-m" "io.github.sokrato.ctf.core"]}
+  ;; clojure -Mtest --watch --fail-fast
+  :test  {:extra-deps {lambdaisland/kaocha {:mvn/version "1.66.1034"}}
+          :main-opts  ["-m" "kaocha.runner"]}
+  ;; this is for :deps/prep-lib
+  :build {:deps       {io.github.sokrato/sok.dev {:local/root "/Users/bytedance/Documents/clj/sok.dev"}}
+          :ns-default io.github.sokrato.dev.build}}
+ ;;
+ }
