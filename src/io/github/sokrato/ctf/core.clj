@@ -27,4 +27,4 @@
     (-> args
         parse-args
         crack
-        println)))
+        (#(log/info "answer is:" %)))))

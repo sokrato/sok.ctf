@@ -40,6 +40,7 @@
     就会寻找父logger看有没有指定级别，直到找到root。-->
     <root level="info">
         <appender-ref ref="stdout"/>
+        <appender-ref ref="ROLLING"/>
     </root>
 
 <!--    <logger name="weibo" level="debug" additivity="true">-->
