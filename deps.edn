@@ -1,11 +1,15 @@
-{:lib   io.github.sokrato/sok.ctf
- :main  io.github.sokrato.ctf.core
- :paths ["src" "target/classes"]
+{:lib               io.github.sokrato/sok.ctf
+ :main              io.github.sokrato.ctf.core
+ :paths             ["src" "target/classes"]
+
+ :build/compile-clj false
 
  :deps
  {com.google.guava/guava         {:mvn/version "31.1-jre"}
   org.clojure/tools.logging      {:mvn/version "1.2.4"}
-  ch.qos.logback/logback-classic {:mvn/version "1.2.11"}}
+  ch.qos.logback/logback-classic {:mvn/version "1.2.11"}
+  org.clj-commons/byte-streams   {:mvn/version "0.3.1"}
+  com.auth0/java-jwt             {:mvn/version "3.19.0"}}
 
  ; clj -X:deps prep
  :deps/prep-lib
