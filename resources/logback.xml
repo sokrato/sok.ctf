@@ -43,7 +43,7 @@
         <appender-ref ref="ROLLING"/>
     </root>
 
-<!--    <logger name="weibo" level="debug" additivity="true">-->
-<!--        <appender-ref ref="ROLLING"/>-->
-<!--    </logger>-->
+    <logger name="io.netty" level="warn" additivity="false">
+        <appender-ref ref="ROLLING"/>
+    </logger>
 </configuration>
