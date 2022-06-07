@@ -12,7 +12,8 @@
     [clj-commons.digest :as digest])
   (:import
     (java.nio.charset StandardCharsets)
-    (java.net URLEncoder URLDecoder))
+    (java.net URLEncoder URLDecoder)
+    (clojure.lang IDeref))
   (:gen-class))
 
 (defn http-post [url data]
@@ -40,3 +41,10 @@
 
 ;my baidu server:
 ;http://106.13.49.30/
+
+(defn unwrap
+  "deref the arg or get the exception within"
+  [^IDeref der]
+  (try
+    (deref der)
+    (catch Throwable exc exc)))
