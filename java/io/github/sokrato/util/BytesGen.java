@@ -42,7 +42,6 @@ public class BytesGen implements Generator<byte[]> {
         for (int i = position.length - 1; i >= 0; --i) {
             int p = position[i] + carry;
             if (p >= alphabet.length) {
-                carry = 1;
                 buf[offset + i] = alphabet[0];
                 position[i] = 0;
             } else {

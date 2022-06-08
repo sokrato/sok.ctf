@@ -5,10 +5,7 @@
   (:gen-class))
 
 (deftest test-crack
-  (is (= "010" (crack {:prefix "abc123"
-                       :method "sha256"
-                       :target "5c4a4e"})))
-  (is (= "011" (crack {:target "84eb13"
-                       :method "md5"})))
+  (is (= "010" (sha256 "5c4a4e" "abc123" "")))
+  (is (= "011" (md5 "84eb13")))
   ;;
   )

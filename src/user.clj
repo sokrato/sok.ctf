@@ -31,14 +31,6 @@
 (defn url-encode [^String s]
   (URLEncoder/encode s StandardCharsets/UTF_8))
 
-(defn crack-md5 [^String target]
-  (crack/crack {:method "md5"
-                :target target}))
-
-(defn crack-sha256 [^String prefix]
-  (crack/crack {:method "sha256"
-                :prefix prefix}))
-
 ;my baidu server:
 ;http://106.13.49.30/
 

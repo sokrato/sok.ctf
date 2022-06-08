@@ -50,3 +50,6 @@
 (defn url-decode-as-str [x]
   (-> (url-decode x)
       bs/to-string))
+
+(defn b16-decode [^String s]
+  ())
